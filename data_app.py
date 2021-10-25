@@ -49,7 +49,7 @@ def get_graph(index):
 
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', str(random.randint(0, 1000000)))
-row_data_figure=no_fig
+row_data_figure=get_graph
 selector_data=pd.read_csv(r"dash_selector_data.csv")
 selector_data=selector_data.loc[:, ~selector_data.columns.str.contains('^Unnamed')]
 selector_data.insert(0,'id',selector_data.index)
