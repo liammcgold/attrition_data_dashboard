@@ -7,6 +7,8 @@ import pandas as pd
 import ModelSavingLogic
 import plotly.express as px
 import copy
+import flask
+import os
 
 def no_fig():
     return None
@@ -14,13 +16,15 @@ def null_el_function():
         return  html.Div()
         
 
+server = flask.Flask(__name__)
+server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
+app = dash.Dash(__name__, server=server)
 
 def run(row_data_figure=no_fig,
         selector_data=pd.read_csv(r"Data\dash_selector_data.csv")):
     selector_data=selector_data.loc[:, ~selector_data.columns.str.contains('^Unnamed')]
     selector_data.insert(0,'id',selector_data.index)
     selector_data=selector_data[selector_data["ModelPredictions"]>0.5]
-    app = dash.Dash(__name__)
 
     app.layout = html.Div()
 
