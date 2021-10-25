@@ -1,8 +1,8 @@
 import dash
 from dash.dependencies import Input, Output
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_table
+from dash import dcc
+from dash import html
+from dash import dash_table
 import pandas as pd
 import ModelSavingLogic
 import plotly.express as px
@@ -48,7 +48,7 @@ def run(row_data_figure=no_fig,
                         'overflow':'auto'
 					 })    
    
-    print("BUILT LAYOUT")
+
     app.layout = html.Div([selection_table_element,
         html.Div(id="model-results"),
     ])
@@ -68,11 +68,11 @@ def run(row_data_figure=no_fig,
             return null_el_function()
 
         return dcc.Graph(figure=fig)
-    print("Defined callbacks")
+
     
     app.run_server(debug=True,threaded=True)
 
-    print("ran server")
+
 
 
 if __name__ == '__main__':
@@ -105,6 +105,6 @@ if __name__ == '__main__':
         title='Probability of attrition given salary hike for employee ID '+str(index))
 
         return fig
-    print("ALL DEFINITIONS MADE")
+
     run(row_data_figure=get_graph)
 
