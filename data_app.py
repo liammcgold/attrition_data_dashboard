@@ -23,7 +23,7 @@ app = dash.Dash(__name__, server=server)
 
 
 def run(row_data_figure=no_fig,
-        selector_data=pd.read_csv(r"Data\dash_selector_data.csv")):
+        selector_data=pd.read_csv(r"dash_selector_data.csv")):
     selector_data=selector_data.loc[:, ~selector_data.columns.str.contains('^Unnamed')]
     selector_data.insert(0,'id',selector_data.index)
     selector_data=selector_data[selector_data["ModelPredictions"]>0.5]
@@ -76,7 +76,7 @@ def run(row_data_figure=no_fig,
 
 
 if __name__ == '__main__':
-    test_data=pd.read_csv(r"Data\test_data_encoded.csv")
+    test_data=pd.read_csv(r"test_data_encoded.csv")
     test_data = test_data.loc[:, ~test_data.columns.str.contains('^Unnamed')]
     test_x = test_data.drop('Attrition',axis=1)## We wil not use the test_y here to simulate the real use case
     test_data=None
