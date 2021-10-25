@@ -49,7 +49,7 @@ def run(row_data_figure=no_fig,
 					 })    
    
     print("BUILT LAYOUT")
-    app.layout = html.Div([#selection_table_element,
+    app.layout = html.Div([selection_table_element,
         html.Div(id="model-results"),
     ])
 
