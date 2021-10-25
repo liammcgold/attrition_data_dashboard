@@ -10,7 +10,6 @@ import copy
 import flask
 import os
 import random
-from werkzeug.debug import DebuggedApplication
 
 def no_fig():
     return None
