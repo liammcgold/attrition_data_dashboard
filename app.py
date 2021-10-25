@@ -1,14 +1,16 @@
 import dash
 from dash.dependencies import Input, Output
-import dash.dash_table as dash_table
-from dash import dcc
-from dash import html
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_table
 import pandas as pd
 import ModelSavingLogic
 import plotly.express as px
 import copy
 import flask
 import os
+import random
+from werkzeug.debug import DebuggedApplication
 
 def no_fig():
     return None
@@ -17,16 +19,15 @@ def null_el_function():
         
 
 server = flask.Flask(__name__)
-server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
+server.secret_key = os.environ.get('secret_key', str(random.randint(0, 1000000)))
 app = dash.Dash(__name__, server=server)
+
 
 def run(row_data_figure=no_fig,
         selector_data=pd.read_csv(r"Data\dash_selector_data.csv")):
     selector_data=selector_data.loc[:, ~selector_data.columns.str.contains('^Unnamed')]
     selector_data.insert(0,'id',selector_data.index)
     selector_data=selector_data[selector_data["ModelPredictions"]>0.5]
-
-    app.layout = html.Div()
 
     selection_table = dash_table.DataTable(
             id='row-selector',
@@ -48,14 +49,14 @@ def run(row_data_figure=no_fig,
                         'overflow':'auto'
 					 })    
    
-
-    app.layout = html.Div([selection_table_element,
+    print("BUILT LAYOUT")
+    app.layout = html.Div([#selection_table_element,
         html.Div(id="model-results"),
     ])
 
     @app.callback(
     Output('model-results', 'children'),
-    Input('row-selector', 'selected_row_ids'))
+    [Input('row-selector', 'selected_row_ids')])
     def update_model_component(selected_row_ids):
         if selected_row_ids is None:
             return null_el_function()
@@ -68,10 +69,11 @@ def run(row_data_figure=no_fig,
             return null_el_function()
 
         return dcc.Graph(figure=fig)
+    print("Defined callbacks")
+    
+    app.run_server(debug=True,threaded=True)
 
-
-    app.run_server(debug=True)
-
+    print("ran server")
 
 
 if __name__ == '__main__':
@@ -104,4 +106,6 @@ if __name__ == '__main__':
         title='Probability of attrition given salary hike for employee ID '+str(index))
 
         return fig
+    print("ALL DEFINITIONS MADE")
     run(row_data_figure=get_graph)
+

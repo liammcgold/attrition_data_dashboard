@@ -1,0 +1,6 @@
+pyvenv.cfg
+Scripts/
+share/
+Lib/
+Include/
+etc/
